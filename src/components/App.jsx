@@ -35,7 +35,7 @@ function App() {
 	function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) };
 	function handleEditProfileClick() { setIsEditInfoPopupOpen(true) };
 	function handleAddCardClick() { setIsAddCardPopupOpen(true) };
-	function handleConfirmClick() { setIsConfirmPopupOpen(true) };
+	//function handleConfirmClick() { setIsConfirmPopupOpen(true) };
 
 	function closeThisPopup() {
 		setIsEditAvatarPopupOpen(false);
