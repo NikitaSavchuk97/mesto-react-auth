@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Switch, Redirect, Route } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 import Main from "./Main";
+import Login from './Login';
 import Header from "./Header";
 import Footer from "./Footer";
 import api from "../utils/Api";
+import Register from './Register';
 import ImagePopup from "./ImagePopup";
+//import InfoTooltip from './InfoTooltip';
 import PopupTypeInfo from "./PopupTypeInfo";
+import ProtectedRoute from './ProtectedRoute';
 import PopupTypeAvatar from "./PopupTypeAvatar";
 import PopupTypeAddCard from "./PopupTypeAddCard";
 import PopupTypeConfirm from "./PopupTypeConfirm";
@@ -29,6 +33,7 @@ function App() {
 	const [isAddCardPopupOpen, setIsAddCardPopupOpen] = useState(false);
 	const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
+	const [loggedIn, setLoggedIn] = useState(true);
 	const [cards, setCards] = useState([]);
 
 	function handleShowIllustrationClick(card) { setSelectedCard(card) };
@@ -96,8 +101,9 @@ function App() {
 	}
 
 	return (
-		<CurrentUserContext.Provider value={currentUser}>
-			<div className="page">
+
+		<div className="page">
+			<CurrentUserContext.Provider value={currentUser}>
 
 				<Header />
 
@@ -110,6 +116,38 @@ function App() {
 					profileClick={handleEditProfileClick}
 					illustrationClick={handleShowIllustrationClick}
 				/>
+
+
+
+
+				{/*
+				<Switch>
+					<ProtectedRoute>
+						<Main
+							cards={cards}
+							likeClick={handleCardLike}
+							deleteClick={handleCardDelete}
+							cardClick={handleAddCardClick}
+							avatarClick={handleEditAvatarClick}
+							profileClick={handleEditProfileClick}
+							illustrationClick={handleShowIllustrationClick}
+						/>
+					</ProtectedRoute>
+						
+					<Route path='/sing-up'>
+						<Register />
+					</Route>
+
+					<Route path='/sing-in'>
+						<Login />
+					</Route>
+
+					<Route exact path='/'>
+						{loggedIn ? <Redirect to='/' /> : <Redirect to="/sing-in" />}
+					</Route>
+
+				</Switch>
+				*/}
 
 				<Footer />
 
@@ -140,9 +178,8 @@ function App() {
 					card={selectedCard}
 					close={closeThisPopup}
 				/>
-
-			</div>
-		</CurrentUserContext.Provider>
+			</CurrentUserContext.Provider>
+		</div>
 	);
 }
 
