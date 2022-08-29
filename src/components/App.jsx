@@ -33,7 +33,8 @@ function App() {
 	const [isAddCardPopupOpen, setIsAddCardPopupOpen] = useState(false);
 	const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
-	const [loggedIn, setLoggedIn] = useState(true);
+	const [loggedIn, setLoggedIn] = useState();
+	setLoggedIn(false)
 	const [cards, setCards] = useState([]);
 
 	function handleShowIllustrationClick(card) { setSelectedCard(card) };
@@ -107,20 +108,6 @@ function App() {
 
 				<Header />
 
-				<Main
-					cards={cards}
-					likeClick={handleCardLike}
-					deleteClick={handleCardDelete}
-					cardClick={handleAddCardClick}
-					avatarClick={handleEditAvatarClick}
-					profileClick={handleEditProfileClick}
-					illustrationClick={handleShowIllustrationClick}
-				/>
-
-
-
-
-				{/*
 				<Switch>
 					<ProtectedRoute>
 						<Main
@@ -133,7 +120,7 @@ function App() {
 							illustrationClick={handleShowIllustrationClick}
 						/>
 					</ProtectedRoute>
-						
+
 					<Route path='/sing-up'>
 						<Register />
 					</Route>
@@ -145,9 +132,7 @@ function App() {
 					<Route exact path='/'>
 						{loggedIn ? <Redirect to='/' /> : <Redirect to="/sing-in" />}
 					</Route>
-
 				</Switch>
-				*/}
 
 				<Footer />
 

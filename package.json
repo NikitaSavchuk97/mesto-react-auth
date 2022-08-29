@@ -1,5 +1,5 @@
 {
-  "name": "mesto-react",
+  "name": "mesto-react-auth",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -37,5 +37,18 @@
   },
   "devDependencies": {
     "css-loader": "^6.7.1"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikitaSavchuk97/mesto-react-auth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NikitaSavchuk97/mesto-react-auth/issues"
+  },
+  "homepage": "https://github.com/NikitaSavchuk97/mesto-react-auth#readme",
+  "keywords": []
 }
