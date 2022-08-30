@@ -1,4 +1,5 @@
-import { useEffect, useState, Switch, Redirect, Route } from "react";
+import { useEffect, useState } from "react";
+import { Routes, Navigate, Route } from "react-router-dom";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 import Main from "./Main";
@@ -33,15 +34,14 @@ function App() {
 	const [isAddCardPopupOpen, setIsAddCardPopupOpen] = useState(false);
 	const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
-	const [loggedIn, setLoggedIn] = useState();
-	setLoggedIn(false)
+	const [loggedIn, setLoggedIn] = useState(false);
 	const [cards, setCards] = useState([]);
 
 	function handleShowIllustrationClick(card) { setSelectedCard(card) };
 	function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) };
 	function handleEditProfileClick() { setIsEditInfoPopupOpen(true) };
 	function handleAddCardClick() { setIsAddCardPopupOpen(true) };
-	//function handleConfirmClick() { setIsConfirmPopupOpen(true) };
+	function handleConfirmClick() { setIsConfirmPopupOpen(true) };
 
 	function closeThisPopup() {
 		setIsEditAvatarPopupOpen(false);
@@ -102,37 +102,70 @@ function App() {
 	}
 
 	return (
-
-		<div className="page">
-			<CurrentUserContext.Provider value={currentUser}>
+		<CurrentUserContext.Provider value={currentUser}>
+			<div className="page">
 
 				<Header />
 
-				<Switch>
-					<ProtectedRoute>
-						<Main
-							cards={cards}
-							likeClick={handleCardLike}
-							deleteClick={handleCardDelete}
-							cardClick={handleAddCardClick}
-							avatarClick={handleEditAvatarClick}
-							profileClick={handleEditProfileClick}
-							illustrationClick={handleShowIllustrationClick}
-						/>
-					</ProtectedRoute>
+				<Routes>
 
-					<Route path='/sing-up'>
-						<Register />
-					</Route>
+					<Route
+						path="/cards"
+						element={
+							<ProtectedRoute loggiedIn={loggedIn}>
+								<Main
+									cards={cards}
+									likeClick={handleCardLike}
+									deleteClick={handleCardDelete}
+									cardClick={handleAddCardClick}
+									avatarClick={handleEditAvatarClick}
+									profileClick={handleEditProfileClick}
+									illustrationClick={handleShowIllustrationClick}
+								/>
+							</ProtectedRoute>
+						}
+					/>
 
-					<Route path='/sing-in'>
-						<Login />
-					</Route>
+					<Route
+						path="/sign-in"
+						element={
+							<Login />
+						}
+					/>
 
-					<Route exact path='/'>
-						{loggedIn ? <Redirect to='/' /> : <Redirect to="/sing-in" />}
-					</Route>
-				</Switch>
+					<Route
+						path="/sign-up"
+						element={
+							<Register />
+						}
+					/>
+
+					<Route
+						exact
+						path="/"
+						element={
+							loggedIn ? <Navigate to="/cards" /> : <Navigate to="/sign-in" />
+						}
+					/>
+
+				</Routes>
+
+
+
+
+				{
+					/*
+					<Main
+						cards={cards}
+						likeClick={handleCardLike}
+						deleteClick={handleCardDelete}
+						cardClick={handleAddCardClick}
+						avatarClick={handleEditAvatarClick}
+						profileClick={handleEditProfileClick}
+						illustrationClick={handleShowIllustrationClick}
+					/>
+					*/
+				}
 
 				<Footer />
 
@@ -163,8 +196,9 @@ function App() {
 					card={selectedCard}
 					close={closeThisPopup}
 				/>
-			</CurrentUserContext.Provider>
-		</div>
+
+			</div >
+		</CurrentUserContext.Provider>
 	);
 }
 

@@ -1,19 +1,14 @@
-import React, { HashRouter } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-try {
-	root.render(
-
+root.render(
+	<BrowserRouter>
 		<React.StrictMode>
-			<HashRouter>
-				<App />
-			</HashRouter>
+			<App />
 		</React.StrictMode>
-
-	);
-} catch (error) {
-	console.error("React render error: ", error)
-}
+	</BrowserRouter>
+);
