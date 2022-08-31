@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Navigate, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 import Main from "./Main";
@@ -15,6 +15,8 @@ import ProtectedRoute from './ProtectedRoute';
 import PopupTypeAvatar from "./PopupTypeAvatar";
 import PopupTypeAddCard from "./PopupTypeAddCard";
 import PopupTypeConfirm from "./PopupTypeConfirm";
+import { registeration, authorization, validation } from "../utils/auth";
+
 
 
 function App() {
@@ -36,6 +38,7 @@ function App() {
 	const [currentUser, setCurrentUser] = useState({});
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [cards, setCards] = useState([]);
+	const navigate = useNavigate();
 
 	function handleShowIllustrationClick(card) { setSelectedCard(card) };
 	function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) };
@@ -50,6 +53,20 @@ function App() {
 		setIsConfirmPopupOpen(false);
 		setSelectedCard({});
 	};
+
+	useEffect(() => {
+		checkToken();
+	})
+
+
+	function checkToken() {
+		const token = localStorage.getItem('jwt')
+		validation(token)
+			.then((res) => {
+				console.log(res)
+				setLoggedIn(true)
+			})
+	}
 
 	function handleCardLike(card) {
 		const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -105,10 +122,9 @@ function App() {
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="page">
 
-				<Header />
+				<Header loggedIn={loggedIn} />
 
 				<Routes>
-
 					<Route
 						path="/cards"
 						element={
@@ -147,25 +163,7 @@ function App() {
 							loggedIn ? <Navigate to="/cards" /> : <Navigate to="/sign-in" />
 						}
 					/>
-
 				</Routes>
-
-
-
-
-				{
-					/*
-					<Main
-						cards={cards}
-						likeClick={handleCardLike}
-						deleteClick={handleCardDelete}
-						cardClick={handleAddCardClick}
-						avatarClick={handleEditAvatarClick}
-						profileClick={handleEditProfileClick}
-						illustrationClick={handleShowIllustrationClick}
-					/>
-					*/
-				}
 
 				<Footer />
 
