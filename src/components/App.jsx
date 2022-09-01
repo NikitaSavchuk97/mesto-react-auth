@@ -15,7 +15,7 @@ import ProtectedRoute from './ProtectedRoute';
 import PopupTypeAvatar from "./PopupTypeAvatar";
 import PopupTypeAddCard from "./PopupTypeAddCard";
 import PopupTypeConfirm from "./PopupTypeConfirm";
-import { registeration, authorization, validation } from "../utils/auth";
+import { validation } from "../utils/auth";
 
 
 
@@ -34,7 +34,7 @@ function App() {
 	function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) };
 	function handleEditProfileClick() { setIsEditInfoPopupOpen(true) };
 	function handleAddCardClick() { setIsAddCardPopupOpen(true) };
-	function handleConfirmClick() { setIsConfirmPopupOpen(true) };
+	//function handleConfirmClick() { setIsConfirmPopupOpen(true) };
 
 	function closeThisPopup() {
 		setIsEditAvatarPopupOpen(false);
