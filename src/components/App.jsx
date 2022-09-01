@@ -22,11 +22,11 @@ import { registeration, authorization, validation } from "../utils/auth";
 function App() {
 
 	useEffect(() => {
-		Promise.all([api.getUserInfo(), api.getCards(), validation()])
-			.then(([apiUser, apiCards, auth]) => {
+		checkToken();
+		Promise.all([api.getUserInfo(), api.getCards()])
+			.then(([apiUser, apiCards]) => {
 				setCurrentUser(apiUser)
 				setCards(apiCards)
-				console.log(auth)
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -55,17 +55,19 @@ function App() {
 		setSelectedCard({});
 	};
 
-	useEffect(() => {
-		checkToken();
-	})
-
-
 	function checkToken() {
 		const token = localStorage.getItem('token')
 		validation(token)
 			.then((res) => {
 				setLoggedIn(true)
+				navigate('/')
 			})
+	}
+
+	function logout() {
+		localStorage.removeItem('token')
+		//setLoggedIn(false)
+		navigate('/sign-in')
 	}
 
 	function handleCardLike(card) {
@@ -122,7 +124,9 @@ function App() {
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="page">
 
-				<Header loggedIn={loggedIn} />
+				<Header
+					logout={logout}
+				/>
 
 				<Routes>
 					<Route

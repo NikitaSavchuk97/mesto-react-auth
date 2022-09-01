@@ -1,7 +1,6 @@
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
 function dataServerAnswer(resolve) {
-	console.log(resolve)
 	if (resolve.ok) {
 		return resolve.json()
 	}

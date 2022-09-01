@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 
-function Header() {
+function Header({ logout }) {
+
 	const location = useLocation();
+
 	return (
 		<header className="header">
 			<div className="header__logo"></div>
@@ -16,6 +18,7 @@ function Header() {
 							"/sign-in"
 				}
 				className='header__login'
+				onClick={logout}
 			>
 				{
 					location.pathname === "/sign-up"
@@ -25,7 +28,6 @@ function Header() {
 							: "Выйти"
 				}
 			</Link>
-
 		</header>
 	);
 }

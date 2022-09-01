@@ -1,4 +1,4 @@
-GH-PAGES GH Pages https://nikitasavchuk97.github.io/mesto-react-auth/
+GH-PAGES https://nikitasavchuk97.github.io/mesto-react-auth/
 
 # Getting Started with Create React App
 

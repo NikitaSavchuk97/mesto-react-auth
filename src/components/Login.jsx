@@ -20,14 +20,12 @@ function Login() {
 	function handleSubmit(e) {
 		e.preventDefault();
 		auth.authorization(password, email)
-			.then((res) => {
-				if (res) {
+			.then(
+				(res) => {
 					localStorage.setItem('token', res.token)
-					navigate('/cards')
-				} else {
-					alert('Ошибка!')
+					navigate('/')
 				}
-			})
+			)
 	}
 
 
