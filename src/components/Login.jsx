@@ -23,7 +23,7 @@ function Login() {
 			.then(
 				(res) => {
 					localStorage.setItem('token', res.token)
-					navigate('/')
+					navigate('/cards')
 				}
 			)
 	}

@@ -20,17 +20,6 @@ import { registeration, authorization, validation } from "../utils/auth";
 
 
 function App() {
-
-	useEffect(() => {
-		checkToken();
-		Promise.all([api.getUserInfo(), api.getCards()])
-			.then(([apiUser, apiCards]) => {
-				setCurrentUser(apiUser)
-				setCards(apiCards)
-			})
-			.catch((err) => console.log(err));
-	}, []);
-
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
 	const [isEditInfoPopupOpen, setIsEditInfoPopupOpen] = useState(false);
@@ -55,19 +44,41 @@ function App() {
 		setSelectedCard({});
 	};
 
-	function checkToken() {
-		const token = localStorage.getItem('token')
-		validation(token)
-			.then((res) => {
-				setLoggedIn(true)
-				navigate('/')
+	/*
+		function checkToken() {
+			const token = localStorage.getItem('token')
+			validation(token)
+				.then((res) => {
+					setLoggedIn(true)
+					navigate('/cards')
+				})
+		}
+	*/
+
+	useEffect(() => {
+		Promise.all([api.getUserInfo(), api.getCards()])
+			.then(([apiUser, apiCards]) => {
+				setCurrentUser(apiUser)
+				setCards(apiCards)
 			})
-	}
+			.catch((err) => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		if (token) {
+			validation(token)
+				.then((res) => {
+					setLoggedIn(true);
+					navigate("/cards");
+				})
+		}
+	}, [navigate]);
 
 	function logout() {
 		localStorage.removeItem('token')
-		//setLoggedIn(false)
-		navigate('/sign-in')
+		setLoggedIn(false)
+
 	}
 
 	function handleCardLike(card) {
