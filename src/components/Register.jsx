@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as auth from '../utils/auth.js'
 
 function Register() {
 
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
@@ -25,7 +27,13 @@ function Register() {
 		e.preventDefault();
 		if (password === confirmPassword) {
 			auth.registeration(password, email)
-
+				.then((res) => {
+					if (res) {
+						navigate('/sign-in')
+					} else {
+						alert('Ошибка!')
+					}
+				})
 		}
 	}
 

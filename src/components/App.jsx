@@ -22,10 +22,11 @@ import { registeration, authorization, validation } from "../utils/auth";
 function App() {
 
 	useEffect(() => {
-		Promise.all([api.getUserInfo(), api.getCards()])
-			.then(([apiUser, apiCards]) => {
+		Promise.all([api.getUserInfo(), api.getCards(), validation()])
+			.then(([apiUser, apiCards, auth]) => {
 				setCurrentUser(apiUser)
-				setCards(apiCards);
+				setCards(apiCards)
+				console.log(auth)
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -60,10 +61,9 @@ function App() {
 
 
 	function checkToken() {
-		const token = localStorage.getItem('jwt')
+		const token = localStorage.getItem('token')
 		validation(token)
 			.then((res) => {
-				console.log(res)
 				setLoggedIn(true)
 			})
 	}

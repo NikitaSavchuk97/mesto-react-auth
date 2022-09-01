@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as auth from '../utils/auth.js'
 
 function Login() {
-
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -18,8 +19,15 @@ function Login() {
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		auth.authorization(password, email);
-
+		auth.authorization(password, email)
+			.then((res) => {
+				if (res) {
+					localStorage.setItem('token', res.token)
+					navigate('/cards')
+				} else {
+					alert('Ошибка!')
+				}
+			})
 	}
 
 

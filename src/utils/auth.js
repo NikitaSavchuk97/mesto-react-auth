@@ -1,6 +1,7 @@
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
 function dataServerAnswer(resolve) {
+	console.log(resolve)
 	if (resolve.ok) {
 		return resolve.json()
 	}
@@ -17,7 +18,6 @@ export const registeration = (password, email) => {
 		body: JSON.stringify({ password, email })
 	})
 		.then((resolve) => {
-			console.log(resolve)
 			return dataServerAnswer(resolve)
 		})
 }
@@ -32,7 +32,6 @@ export const authorization = (password, email) => {
 		body: JSON.stringify({ password, email })
 	})
 		.then((resolve) => {
-			console.log(resolve)
 			return dataServerAnswer(resolve)
 		})
 }
@@ -46,7 +45,6 @@ export const validation = (token) => {
 		}
 	})
 		.then((resolve) => {
-			console.log(resolve)
 			return dataServerAnswer(resolve)
 		})
 }
