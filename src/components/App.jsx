@@ -9,24 +9,28 @@ import Footer from "./Footer";
 import api from "../utils/Api";
 import Register from './Register';
 import ImagePopup from "./ImagePopup";
-//import InfoTooltip from './InfoTooltip';
+import InfoTooltip from './InfoTooltip';
+import * as auth from '../utils/auth.js';
+import { validation } from "../utils/auth";
 import PopupTypeInfo from "./PopupTypeInfo";
 import ProtectedRoute from './ProtectedRoute';
 import PopupTypeAvatar from "./PopupTypeAvatar";
 import PopupTypeAddCard from "./PopupTypeAddCard";
 import PopupTypeConfirm from "./PopupTypeConfirm";
-import { validation } from "../utils/auth";
+
 
 
 
 function App() {
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
+	const [successRegistration, setSuccessRegistration] = useState(false);
 	const [isEditInfoPopupOpen, setIsEditInfoPopupOpen] = useState(false);
 	const [isAddCardPopupOpen, setIsAddCardPopupOpen] = useState(false);
 	const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
 	const [loggedIn, setLoggedIn] = useState(false);
+	const [message, setMessage] = useState(false);
 	const [cards, setCards] = useState([]);
 	const navigate = useNavigate();
 
@@ -39,6 +43,7 @@ function App() {
 	function closeThisPopup() {
 		setIsEditAvatarPopupOpen(false);
 		setIsEditInfoPopupOpen(false);
+		setSuccessRegistration(false);
 		setIsAddCardPopupOpen(false);
 		setIsConfirmPopupOpen(false);
 		setSelectedCard({});
@@ -78,8 +83,48 @@ function App() {
 	function logout() {
 		localStorage.removeItem('token')
 		setLoggedIn(false)
-
 	}
+
+	function handleSubmitRegistration({ password, email, confirmPassword }) {
+
+		if (password != confirmPassword) {
+			setMessage(true)
+			setSuccessRegistration(true)
+			setTimeout(() => {
+				setSuccessRegistration(false)
+			}, 3000)
+		} else {
+			auth.registration(password, email)
+				.then(() => {
+					setMessage(false)
+				})
+				.finally(() => {
+					setSuccessRegistration(true)
+					setTimeout(() => {
+						setSuccessRegistration(false)
+					}, 3000)
+					navigate('/sign-in')
+				})
+		}
+	}
+
+	function handleSubmitLogin(password, email) {
+		auth.authorization(password, email)
+			.then(
+				(res) => {
+					localStorage.setItem('token', res.token)
+					navigate('/cards')
+				}
+			)
+			.catch(() => {
+				setMessage(true)
+				setSuccessRegistration(true)
+				setTimeout(() => {
+					setSuccessRegistration(false)
+				}, 3000)
+			})
+	}
+
 
 	function handleCardLike(card) {
 		const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -160,14 +205,18 @@ function App() {
 					<Route
 						path="/sign-in"
 						element={
-							<Login />
+							<Login
+								handleSubmitLogin={handleSubmitLogin}
+							/>
 						}
 					/>
 
 					<Route
 						path="/sign-up"
 						element={
-							<Register />
+							<Register
+								handleSubmitRegistration={handleSubmitRegistration}
+							/>
 						}
 					/>
 
@@ -208,6 +257,12 @@ function App() {
 				<ImagePopup
 					card={selectedCard}
 					close={closeThisPopup}
+				/>
+
+				<InfoTooltip
+					open={successRegistration}
+					close={closeThisPopup}
+					message={message}
 				/>
 
 			</div >

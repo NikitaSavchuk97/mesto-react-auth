@@ -7,7 +7,7 @@ function dataServerAnswer(resolve) {
 	return Promise.reject(`Ошибка ${resolve.status}`)
 }
 
-export const registeration = (password, email) => {
+export const registration = (password, email) => {
 	return fetch(`${BASE_URL}/signup`, {
 		method: 'POST',
 		headers: {
