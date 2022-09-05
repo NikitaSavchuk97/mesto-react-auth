@@ -49,17 +49,6 @@ function App() {
 		setSelectedCard({});
 	};
 
-	/*
-		function checkToken() {
-			const token = localStorage.getItem('token')
-			validation(token)
-				.then((res) => {
-					setLoggedIn(true)
-					navigate('/cards')
-				})
-		}
-	*/
-
 	useEffect(() => {
 		Promise.all([api.getUserInfo(), api.getCards()])
 			.then(([apiUser, apiCards]) => {
