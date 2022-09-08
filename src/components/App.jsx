@@ -18,9 +18,6 @@ import PopupTypeAvatar from "./PopupTypeAvatar";
 import PopupTypeAddCard from "./PopupTypeAddCard";
 import PopupTypeConfirm from "./PopupTypeConfirm";
 
-
-
-
 function App() {
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
@@ -30,6 +27,7 @@ function App() {
 	const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
 	const [loggedIn, setLoggedIn] = useState(false);
+	const [userEmail, setUserEmail] = useState('');
 	const [message, setMessage] = useState(false);
 	const [cards, setCards] = useState([]);
 	const navigate = useNavigate();
@@ -38,7 +36,7 @@ function App() {
 	function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) };
 	function handleEditProfileClick() { setIsEditInfoPopupOpen(true) };
 	function handleAddCardClick() { setIsAddCardPopupOpen(true) };
-	function handleConfirmClick() { setIsConfirmPopupOpen(true) };
+	//function handleConfirmClick() { setIsConfirmPopupOpen(true) };
 
 	function closeThisPopup() {
 		setIsEditAvatarPopupOpen(false);
@@ -50,33 +48,37 @@ function App() {
 	};
 
 	useEffect(() => {
-		Promise.all([api.getUserInfo(), api.getCards()])
-			.then(([apiUser, apiCards]) => {
-				setCurrentUser(apiUser)
-				setCards(apiCards)
-			})
-			.catch((err) => console.log(err));
-	}, []);
-
-	useEffect(() => {
 		const token = localStorage.getItem("token");
 		if (token) {
 			validation(token)
 				.then((res) => {
+					setUserEmail(res.data.email)
 					setLoggedIn(true);
-					navigate("/cards");
+					navigate("/");
 				})
+				.catch((err) => console.log(err));
 		}
 	}, [navigate]);
 
+	useEffect(() => {
+		if (loggedIn) {
+			Promise.all([api.getUserInfo(), api.getCards()])
+				.then(([apiUser, apiCards]) => {
+					setCurrentUser(apiUser)
+					setCards(apiCards)
+				})
+				.catch((err) => console.log(err));
+		}
+	}, [loggedIn]);
+
 	function logout() {
 		localStorage.removeItem('token')
+		setUserEmail('')
 		setLoggedIn(false)
 	}
 
 	function handleSubmitRegistration({ password, email, confirmPassword }) {
-
-		if (password != confirmPassword) {
+		if (password !== confirmPassword) {
 			setMessage(true)
 			setSuccessRegistration(true)
 			setTimeout(() => {
@@ -102,7 +104,7 @@ function App() {
 			.then(
 				(res) => {
 					localStorage.setItem('token', res.token)
-					navigate('/cards')
+					navigate('/')
 				}
 			)
 			.catch(() => {
@@ -113,7 +115,6 @@ function App() {
 				}, 3000)
 			})
 	}
-
 
 	function handleCardLike(card) {
 		const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -171,11 +172,12 @@ function App() {
 
 				<Header
 					logout={logout}
+					userEmail={userEmail}
 				/>
 
 				<Routes>
 					<Route
-						path="/cards"
+						path="/"
 						element={
 							<ProtectedRoute loggiedIn={loggedIn}>
 								<Main
@@ -211,9 +213,9 @@ function App() {
 
 					<Route
 						exact
-						path="/"
+						path="*"
 						element={
-							loggedIn ? <Navigate to="/cards" /> : <Navigate to="/sign-in" />
+							loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />
 						}
 					/>
 				</Routes>

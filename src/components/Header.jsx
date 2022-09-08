@@ -1,12 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 
-function Header({ logout }) {
+function Header({ logout, userEmail }) {
 
 	const location = useLocation();
 
 	return (
 		<header className="header">
 			<div className="header__logo"></div>
+			<h3 className="header__email">{userEmail}</h3>
 			<Link
 				to={
 					location.pathname === "/sign-up" ?

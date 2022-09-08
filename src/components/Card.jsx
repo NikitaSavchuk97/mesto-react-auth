@@ -22,7 +22,7 @@ function Card({ card, illustrationClick, onCardLike, onCardDelete }) {
 			'element__like'
 		}
 	`
-
+	
 	function handleIllustrationClick() {
 		illustrationClick(card)
 	}
@@ -34,8 +34,6 @@ function Card({ card, illustrationClick, onCardLike, onCardDelete }) {
 	function handleDeleteClick() {
 		onCardDelete(card)
 	}
-
-
 
 	return (
 		<article className="element">

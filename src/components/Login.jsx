@@ -1,13 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import * as auth from '../utils/auth.js'
 
 function Login({ handleSubmitLogin }) {
-	const navigate = useNavigate();
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-
-
 
 	function handleEmailChange(e) {
 		setEmail(e.target.value);
@@ -21,7 +16,6 @@ function Login({ handleSubmitLogin }) {
 		e.preventDefault();
 		handleSubmitLogin(password, email)
 	}
-
 
 	return (
 		<form className="login" onSubmit={handleSubmit}>

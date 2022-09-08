@@ -1,15 +1,10 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import * as auth from '../utils/auth.js'
 
 function Register({ handleSubmitRegistration }) {
 
-	const navigate = useNavigate();
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
-
-
 
 	function handleEmailChange(e) {
 		setEmail(e.target.value);
@@ -27,7 +22,6 @@ function Register({ handleSubmitRegistration }) {
 		e.preventDefault();
 		handleSubmitRegistration({ password, email, confirmPassword })
 	}
-
 
 	return (
 		<form className="login" onSubmit={handleSubmit}>
