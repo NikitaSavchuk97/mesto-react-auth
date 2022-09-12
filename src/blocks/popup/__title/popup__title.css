@@ -1,6 +1,6 @@
 .popup__title {
 	width: 84%;
-	margin: 34px auto auto auto;
+	margin: auto;
 	min-width: 330px;
 
 	text-align: center;
@@ -19,6 +19,5 @@
 		min-width: 238px;
 
 		margin: 25px auto 0 auto;
-
 	}
 }

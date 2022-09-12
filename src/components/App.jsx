@@ -56,7 +56,14 @@ function App() {
 					setLoggedIn(true);
 					navigate("/");
 				})
-				.catch((err) => console.log(err));
+				.catch(() => {
+					setSuccessOrError(true)
+					setSuccessOrErrorMessage('Не верный пароль или емейл')
+					setSuccessRegistration(true)
+					setTimeout(() => {
+						setSuccessRegistration(false)
+					}, 3000)
+				})
 		}
 	}, [navigate]);
 
@@ -79,8 +86,8 @@ function App() {
 
 	function handleSubmitRegistration({ password, email, confirmPassword }) {
 		if (password !== confirmPassword) {
-			setSuccessOrErrorMessage('Пароли не совпадают')
 			setSuccessOrError(true)
+			setSuccessOrErrorMessage('Пароли не совпадают')
 			setSuccessRegistration(true)
 			setTimeout(() => {
 				setSuccessRegistration(false)
@@ -89,15 +96,15 @@ function App() {
 			auth.registration(password, email)
 				.then((res) => {
 					if (res.status === 400) {
-						setSuccessOrErrorMessage('Такой пользователь уже зарегистрирован')
 						setSuccessOrError(true)
+						setSuccessOrErrorMessage('Пользователь с таким емайлом уже зарегистрирован')
 						setSuccessRegistration(true)
 						setTimeout(() => {
 							setSuccessRegistration(false)
 						}, 3000)
 					} else if (password === confirmPassword) {
-						setSuccessOrErrorMessage('Вы успешно зарегистрировались')
 						setSuccessOrError(false)
+						setSuccessOrErrorMessage('Вы успешно зарегистрировались')
 						setSuccessRegistration(true)
 						setTimeout(() => {
 							setSuccessRegistration(false)
@@ -114,7 +121,7 @@ function App() {
 				localStorage.setItem('token', res.token)
 				navigate('/')
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => console.log(err));
 	}
 
 	function handleCardLike(card) {
