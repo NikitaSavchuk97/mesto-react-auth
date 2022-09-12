@@ -11,7 +11,6 @@ import Register from './Register';
 import ImagePopup from "./ImagePopup";
 import InfoTooltip from './InfoTooltip';
 import * as auth from '../utils/auth.js';
-import { validation } from "../utils/auth";
 import PopupTypeInfo from "./PopupTypeInfo";
 import ProtectedRoute from './ProtectedRoute';
 import PopupTypeAvatar from "./PopupTypeAvatar";
@@ -21,14 +20,15 @@ import PopupTypeConfirm from "./PopupTypeConfirm";
 function App() {
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
+	const [successOrErrorMessage, setSuccessOrErrorMessage] = useState('');
 	const [successRegistration, setSuccessRegistration] = useState(false);
 	const [isEditInfoPopupOpen, setIsEditInfoPopupOpen] = useState(false);
 	const [isAddCardPopupOpen, setIsAddCardPopupOpen] = useState(false);
 	const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+	const [successOrError, setSuccessOrError] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [userEmail, setUserEmail] = useState('');
-	const [message, setMessage] = useState(false);
 	const [cards, setCards] = useState([]);
 	const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ function App() {
 	useEffect(() => {
 		const token = localStorage.getItem("token");
 		if (token) {
-			validation(token)
+			auth.validation(token)
 				.then((res) => {
 					setUserEmail(res.data.email)
 					setLoggedIn(true);
@@ -79,41 +79,42 @@ function App() {
 
 	function handleSubmitRegistration({ password, email, confirmPassword }) {
 		if (password !== confirmPassword) {
-			setMessage(true)
+			setSuccessOrErrorMessage('Пароли не совпадают')
+			setSuccessOrError(true)
 			setSuccessRegistration(true)
 			setTimeout(() => {
 				setSuccessRegistration(false)
 			}, 3000)
 		} else {
 			auth.registration(password, email)
-				.then(() => {
-					setMessage(false)
-				})
-				.finally(() => {
-					setSuccessRegistration(true)
-					setTimeout(() => {
-						setSuccessRegistration(false)
-					}, 3000)
-					navigate('/sign-in')
+				.then((res) => {
+					if (res.status === 400) {
+						setSuccessOrErrorMessage('Такой пользователь уже зарегистрирован')
+						setSuccessOrError(true)
+						setSuccessRegistration(true)
+						setTimeout(() => {
+							setSuccessRegistration(false)
+						}, 3000)
+					} else if (password === confirmPassword) {
+						setSuccessOrErrorMessage('Вы успешно зарегистрировались')
+						setSuccessOrError(false)
+						setSuccessRegistration(true)
+						setTimeout(() => {
+							setSuccessRegistration(false)
+						}, 3000)
+						navigate('/sign-in')
+					}
 				})
 		}
 	}
 
 	function handleSubmitLogin(password, email) {
 		auth.authorization(password, email)
-			.then(
-				(res) => {
-					localStorage.setItem('token', res.token)
-					navigate('/')
-				}
-			)
-			.catch(() => {
-				setMessage(true)
-				setSuccessRegistration(true)
-				setTimeout(() => {
-					setSuccessRegistration(false)
-				}, 3000)
+			.then((res) => {
+				localStorage.setItem('token', res.token)
+				navigate('/')
 			})
+			.catch((err) => console.log(err))
 	}
 
 	function handleCardLike(card) {
@@ -253,7 +254,8 @@ function App() {
 				<InfoTooltip
 					open={successRegistration}
 					close={closeThisPopup}
-					message={message}
+					successOrError={successOrError}
+					successOrErrorMessage={successOrErrorMessage}
 				/>
 
 			</div >

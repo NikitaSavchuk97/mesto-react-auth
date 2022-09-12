@@ -4,7 +4,7 @@ function dataServerAnswer(resolve) {
 	if (resolve.ok) {
 		return resolve.json()
 	}
-	return Promise.reject(`Ошибка ${resolve.status}`)
+	return resolve
 }
 
 export const registration = (password, email) => {

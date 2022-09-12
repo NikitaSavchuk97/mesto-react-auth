@@ -6,7 +6,7 @@ function InfoTooltip({ open, close, successOrError, successOrErrorMessage }) {
 		<div className={`popup ${open ? 'popup_active' : ''}`}>
 			<div className="popup__container">
 				<button onClick={close} className="popup__close" type="button"></button>
-				<img className="popup__status" src={successOrError ? __error : __success} alt={''} />
+				<img className="popup__status" src={successOrError ? __error : __success} alt={successOrErrorMessage} />
 				< h2 className="popup__title">{successOrErrorMessage}</h2>
 			</div>
 		</div>
