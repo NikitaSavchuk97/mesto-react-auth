@@ -179,6 +179,7 @@ function App() {
 			<div className="page">
 
 				<Header
+					loggedIn={loggedIn}
 					logout={logout}
 					userEmail={userEmail}
 				/>

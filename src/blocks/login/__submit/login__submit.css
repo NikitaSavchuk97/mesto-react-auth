@@ -18,3 +18,9 @@
 	background-color: #ffffff;
 	color: #000000;
 }
+
+@media screen and (max-width: 425px) {
+	.login__submit {
+		width: 90%;
+	}
+}

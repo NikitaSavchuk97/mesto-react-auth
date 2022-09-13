@@ -1,35 +1,46 @@
-import { Link, useLocation } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 
-function Header({ logout, userEmail }) {
+function Header({ loggedIn, logout, userEmail }) {
 
-	const location = useLocation();
 
 	return (
 		<header className="header">
 			<div className="header__logo"></div>
 			<h3 className="header__email">{userEmail}</h3>
-			<Link
-				to={
-					location.pathname === "/sign-up" ?
-						"/sign-in"
-						:
-						location.pathname === "/sign-in" ?
-							"/sign-up"
+			<Routes >
+				<Route
+					path="/"
+					element={
+						loggedIn ?
+							<Link to='/sign-in' className='header__login' onClick={logout}>
+								Выйти
+							</Link>
 							:
-							"/sign-in"
-				}
-				className='header__login'
-				onClick={logout}
-			>
-				{
-					location.pathname === "/sign-up"
-						? "Войти"
-						: location.pathname === "/sign-in"
-							? "Регистрироваться"
-							: "Выйти"
-				}
-			</Link>
-		</header>
+							<Navigate
+								to='/sign-in'
+							/>
+					}
+				/>
+
+				<Route
+					path='/sign-up'
+					element={
+						<Link to='/sign-in' className='header__login'>
+							Войти
+						</Link>
+					}
+				/>
+
+				<Route
+					path='/sign-in'
+					element={
+						<Link to='/sign-up' className='header__login'>
+							Регистрироваться
+						</Link>
+					}
+				/>
+			</Routes>
+		</header >
 	);
 }
 
