@@ -1,14 +1,16 @@
 .popup__illustration {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
 
-    cursor: default;
+	cursor: default;
 
-    margin: 0;
-    padding: 0;
+	background-color: transparent;
 
-    position: relative;
+	margin: 0;
+	padding: 0;
+
+	position: relative;
 
 }

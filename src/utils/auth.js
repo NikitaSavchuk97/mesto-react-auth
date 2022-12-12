@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.snv.mesto.nomoredomains.club';
 
 function dataServerAnswer(resolve) {
 	if (resolve.ok) {
